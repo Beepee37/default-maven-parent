@@ -14,29 +14,14 @@ To use it, simple do this :
 		<relativePath />
 	</parent>
 ```
-2.	You can activate your current JDK doing this: 
+2.	specify your java target version: 
 
-	- if your are still using jdk8 for running maven, set your java version in the properties
-
-```xml:
-	<properties>
-		<java.source.version>1.8</java.source.version>
-		<java.target.version>1.8</java.target.version>
-	</properties>
-```
-   
-
-	- if your are using jdk for running maven, set your java release version the properties (have in mind that you can generated java8 binaries with jdk 11 for example)
    
 ```xml:
 	<properties>
 		<maven.compiler.release>8</maven.compiler.release>
 	</properties>
 ```
-
-## JAVA_8_Mvn_Env
-The specific JAVA_8_Mvn_Env configuration is activated automatically if maven is run with jdk8.
-   
 
 ## JAVA_11ON_Mvn_Env
 The specific JAVA_11ON_Mvn_Env configuration is activated automatically if maven is run with jdk11 or higher.
@@ -47,7 +32,7 @@ Normally one of this profiles is automatically activated in this parent if you d
 
 ### Provided testing capabilities
 
-Tthis pom.xml provides unit and integration tests. The first one is run using [surefire plugin](https://maven.apache.org/surefire/maven-surefire-plugin/) in the ``test`` phase. The second one is run using [failsafe plugin](https://maven.apache.org/surefire/maven-failsafe-plugin/) in the ``integration-test`` phase.
+This pom.xml provides unit and integration tests. The first one is run using [surefire plugin](https://maven.apache.org/surefire/maven-surefire-plugin/) in the ``test`` phase. The second one is run using [failsafe plugin](https://maven.apache.org/surefire/maven-failsafe-plugin/) in the ``integration-test`` phase.
 
 ## Code coverage 
 To get code coverage figures in your quality dashboards such as in SONARQUBE, you have to reproduce the following steps in your project:
