@@ -1,0 +1,942 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>beepee37.common</groupId>
+    <artifactId>default-maven-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <description>Maven default Parent Pom to use as parent all projects' parent pom. This pom manages all classical plugins
+        by default (with recent/lastest versions) and also dependencies' versions (recent/lastest) for jakarataee-api, junit, spring
+        and usual logging systems
+    </description>
+    <organization>
+        <name>Beepee37 perso dev</name>
+    </organization>
+
+    <inceptionYear>2024</inceptionYear>
+
+    <!-- general properties -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- dependencies management versions -->
+        <bcprov.jdk18on.version>1.77</bcprov.jdk18on.version>
+        <bouncycastle.version>${bcprov.jdk18on.version}</bouncycastle.version>
+        <commons-codec.version>1.16.0</commons-codec.version>
+        <commons-collections.version>3.2.2</commons-collections.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
+        <commons-io.version>2.15.0</commons-io.version>
+        <commons-lang3.version>3.14.0</commons-lang3.version>
+        <commons.logging.version>1.2</commons.logging.version>
+        <commons-text.version>1.11.0</commons-text.version>
+        <cxf-bom.version>3.5.7</cxf-bom.version>
+	    <jakarta.javaee-api.version>8.0.0</jakarta.javaee-api.version>
+	    <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
+	     
+        <junit-jupiter.version>5.10.2</junit-jupiter.version>
+        <jsch.version>0.1.55</jsch.version>
+        <jsch2.version>0.2.13</jsch2.version>
+
+		<logback.java8.version>1.3.14</logback.java8.version>
+		<logback.java11.version>1.4.14</logback.java11.version>
+        <logback.version>${logback.java11.version}</logback.version>
+        <log4j.version>1.2.17</log4j.version>
+        <log4j2.version>2.22.1</log4j2.version>
+        <reload4j.version>1.2.25</reload4j.version> <!-- reload4j project is a fork of Apache log4j version 1.2.17 -->
+        <slf4j.version>2.0.11</slf4j.version>
+        <xmlsec.version>2.3.3</xmlsec.version>
+
+        <!-- maven plugins versions -->
+        <cyclonedx-maven.version>2.7.10</cyclonedx-maven.version>
+        <maven-archetype.version>3.2.1</maven-archetype.version>
+        <maven-assembly.version>3.6.0</maven-assembly.version>
+        <maven-antrun.version>3.1.0</maven-antrun.version>
+        <build-helper-maven.version>3.4.0</build-helper-maven.version>
+        <maven-clean.version>3.3.2</maven-clean.version>
+        <maven-compiler.version>3.12.1</maven-compiler.version>
+        <maven-dependency.version>3.6.1</maven-dependency.version>
+        <maven-deploy.version>3.1.1</maven-deploy.version>
+        <maven-dependency-check.version>9.0.9</maven-dependency-check.version>
+        <exec-maven.version>3.1.1</exec-maven.version>
+        <maven-failsafe.version>3.2.2</maven-failsafe.version>
+        <maven-install.version>3.1.1</maven-install.version>
+        <maven-invoker.version>3.6.0</maven-invoker.version>
+        <iterator-maven.version>0.5.1</iterator-maven.version>
+        <maven-jacoco.version>0.8.11</maven-jacoco.version>
+        <maven-jar.version>3.3.0</maven-jar.version>
+        <maven-javadoc.version>3.6.2</maven-javadoc.version>
+        <jetty.version>11.0.18</jetty.version>
+        <maven-license.version>2.3.0</maven-license.version>
+        <maven-project-info-reports.version>3.5.0</maven-project-info-reports.version>
+        <maven-release.version>3.0.1</maven-release.version>
+        <maven-resources.version>3.3.1</maven-resources.version>
+        <maven-scm.version>2.0.1</maven-scm.version>
+        <maven-shade.version>3.5.1</maven-shade.version>
+        <maven-site.version>3.12.1</maven-site.version>
+        <sonar-maven.version>3.10.0.2594</sonar-maven.version>
+        <maven-source.version>3.3.0</maven-source.version>
+        <maven-surefire.version>3.2.2</maven-surefire.version>
+        <maven-surefire-report.version>3.2.2</maven-surefire-report.version>
+        <maven-toolchains.version>3.1.0</maven-toolchains.version>
+        <versions-maven.version>2.16.2</versions-maven.version>
+        <maven-war.version>3.4.0</maven-war.version>
+        
+        <!-- plugin args -->
+        <config.env.filtering>true</config.env.filtering>
+        <main.config.directory>src/main/config</main.config.directory>
+        <test.config.directory>src/test/config</test.config.directory>
+
+         <!-- dependency check configuration -->
+         <!-- see also profiles build-with-dependency-check and  build-without-dependency-check defined in this pom for other default configuration -->
+         <!-- see https://jeremylong.github.io/DependencyCheck/dependency-check-maven/check-mojo.html for additionnal options -->
+        <dependency-check.failBuildOnCVSS>11</dependency-check.failBuildOnCVSS>
+        <dependency-check.IndexWarnOnlyOnRemoteErrors>true</dependency-check.IndexWarnOnlyOnRemoteErrors>
+        <dependency-check.skipTestScope>false</dependency-check.skipTestScope>
+        <dependency-check.formats>HTML,JSON</dependency-check.formats>
+        <!-- to avoid child pom to override the exception file. -->
+        <!-- Use of develop, to begin and to adjust its content easily. Master will be used in the future -->
+        <!-- on local windows environment, credential to acces you git repostory  must be stored in the credential manager because build will try to retrieve this file on git host -->
+        <dependency-check.suppression-file>dependency-check-suppress-1.0.xml</dependency-check.suppression-file>
+        <dependency-check.failOnError>false</dependency-check.failOnError>
+
+        <jetty.port>8080</jetty.port>
+
+        <maven-javadoc-additionalparam/>
+        <maven-javadoc-doclintparam>none</maven-javadoc-doclintparam>
+        <maven-javadoc-failOnError>false</maven-javadoc-failOnError>
+
+		<maven-release-plugin-autoversionsubmodules>false</maven-release-plugin-autoversionsubmodules>
+        <maven-release-plugin-preparationgoals>clean verify</maven-release-plugin-preparationgoals>
+     
+        <!-- configuration jacoco & sonar -->
+        <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.exclusions>**/target/**</sonar.exclusions>
+        <!-- <sonar.jacoco.reportPaths>${project.build.directory}/jacoco.exec</sonar.jacoco.reportPaths> -->
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.junit.reportPaths>${project.build.directory}/surefire-reports</sonar.junit.reportPaths>
+        <sonar.language>java</sonar.language>
+        <sonar.tests>src/test</sonar.tests>
+        <jacoco.haltOnFailure>false</jacoco.haltOnFailure>
+        <jacoco.skip>false</jacoco.skip>
+        <jacoco-maven-plugin.append>true</jacoco-maven-plugin.append>
+        
+        <!-- /!\ When using the maven-surefire-plugin or maven-failsafe-plugin with jacoco,  you must not use a forkCount of 0 or set the forkMode to never as this would prevent the execution of the tests with the javaagent set and no coverage would be recorded.  /!\ -->
+        <maven-surefire-additionalClasspathElement/>
+        <maven-surefire-plugin-argline-options></maven-surefire-plugin-argline-options>
+        <maven-surefire-plugin-forkcount>1</maven-surefire-plugin-forkcount>
+        <maven-surefire-plugin-reuseForks>true</maven-surefire-plugin-reuseForks>
+
+        <maven-failsafe-plugin.additionalClasspathElement />
+        <maven-failsafe-plugin.forkCount>1</maven-failsafe-plugin.forkCount>
+        <maven-failsafe-plugin-reuseForks>true</maven-failsafe-plugin-reuseForks>
+       
+    </properties>
+
+    <!-- Repositories for the project (important for releases) . Can not use varaible to declare them.  Maven release may modify this section (tag) -->
+    <scm>
+        <!-- for release -->
+        <connection>scm:git:https://github.com/Beepee37/default-maven-parent</connection>
+        <developerConnection>scm:git:[push=]https://github.com/Beepee37/default-maven-parent[fetch=]https://github.com/Beepee37/default-maven-parent</developerConnection>
+        <url>https://github.com/Beepee37/default-maven-parent</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+      <repository>
+            <id>${repo-name}-releases</id>
+            <name>project Releases Repository</name>
+            <url>${releases-repo-url}</url>
+        </repository>
+        <snapshotRepository>
+            <id>${repo-name}-snapshots</id>
+            <name>project snapshots Repository</name>
+            <url>${snapshots-repo-url}</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <!-- global dependencies management for common dependencies that projets may use. if a project need realy one of this dependency it just add to declare it in the dependencies section without specifying version or scope if there is no specific need regarding these two items. -->
+    <dependencyManagement>
+        <!-- We just define jakarataee-api, junit, and usual logging systems dependencies. Other dependency management must be defined in your project pom -->
+        <dependencies>
+        	<dependency>
+			    <groupId>org.bouncycastle</groupId>
+			    <artifactId>bcprov-jdk18on</artifactId>
+			    <version>${bouncycastle.version}</version>
+			    <scope>provided</scope>
+			</dependency>
+			<dependency>
+			    <groupId>org.bouncycastle</groupId>
+			    <artifactId>bcpkix-jdk18on</artifactId>
+			    <version>${bouncycastle.version}</version>
+			    <scope>provided</scope>
+			</dependency>
+			<dependency>
+    			<groupId>org.bouncycastle</groupId>
+    			<artifactId>bcpg-jdk18on</artifactId>
+			    <version>${bouncycastle.version}</version>
+			    <scope>provided</scope>
+			</dependency>
+			<dependency>
+			    <groupId>org.bouncycastle</groupId>
+			    <artifactId>bcmail-jdk18on</artifactId>
+			    <version>${bouncycastle.version}</version>
+			    <scope>provided</scope>
+			</dependency>
+			
+			<dependency>
+			    <groupId>org.apache.cxf</groupId>
+			    <artifactId>cxf-bom</artifactId>
+			    <version>${cxf-bom.version}</version>
+			    <type>pom</type>
+			    <scope>import</scope>
+			</dependency>
+
+        	<dependency>
+    			<groupId>jakarta.platform</groupId>
+    			<artifactId>jakarta.jakartaee-api</artifactId>
+    			<version>${jakarta.javaee-api.version}</version>
+    			<scope>provided</scope>
+			</dependency>
+            
+            <dependency>
+    			<groupId>jakarta.servlet</groupId>
+    			<artifactId>jakarta.servlet-api</artifactId>
+    			<version>${jakarta.servlet-api.version}</version>
+    			<scope>provided</scope>
+			</dependency>
+
+            <!-- Junit 5 full dependencies management -->
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            
+             <!-- *** logging dependencies versions *** -->
+            <dependency>
+            	 <artifactId>commons-logging</artifactId>
+            	 <groupId>commons-logging</groupId>
+            	 <version>${commons.logging.version}</version>
+           	</dependency>
+
+            <!-- logback -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+
+            <!-- legacy log4j 1.x :  deprecated should not be used anymore : if really needed then replace it with the latest reload4j artificat -->
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <!-- reload4j project is a fork of Apache log4j version 1.2.17 -->
+            <dependency>
+    			<groupId>ch.qos.reload4j</groupId>
+    			<artifactId>reload4j</artifactId>
+    			<version>${reload4j.version}</version>
+			</dependency>
+            
+            <!-- binding slf4j to log4j : deprecated must not be used anymore. If necessary switch to slf4j-reload4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <!-- binding slf4j to reload4j : consider to use logback or log4j 2 if prossible -->
+            <dependency>
+    			<groupId>org.slf4j</groupId>
+    			<artifactId>slf4j-reload4j</artifactId>
+    			<version>${slf4j.version}</version>
+			</dependency>
+            <!-- bridge log4 1.x to Log4j 2  (replace log4j1 by log4j2 impl) -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-1.2-api</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+
+            <!-- log4j 2 -->
+            <dependency>
+			    <groupId>org.apache.logging.log4j</groupId>
+    			<artifactId>log4j-bom</artifactId>
+    			<version>${log4j2.version}</version>
+    			<type>pom</type>
+    			<scope>import</scope>
+			</dependency>
+            
+            
+               <!-- Log4j2 API and Core implementation required for binding -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <!-- bridge jul to log4j 2 -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-jul</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <!-- bridge java commons logging to log4j 2 -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-jcl</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <!-- Deprecated Binding slf4j to Log4j2 should be used with SLF4J 1.7.x releases or older-->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            <!-- Binding slf4j 2 to Log4j2 hould be used with SLF4J 2.0.x releases or newer. cf https://logging.apache.org/log4j/2.x/log4j-slf4j-impl.html -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j2-impl</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            
+            <!-- slf4j api -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            
+            <!-- deault jdk14 slf4j impelementation -->
+			<dependency>
+			    <groupId>org.slf4j</groupId>
+			    <artifactId>slf4j-jdk14</artifactId>
+			    <version>${slf4j.version}</version>
+			    <scope>test</scope>
+			</dependency>
+            
+            <!-- bridge commons-logging to slf4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            
+            <!-- bridge july to slf4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            
+            <!-- bridge log4j 1.x to slf4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>log4j-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            
+            <!-- bridge log4j 2.x to slf4j  -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-to-slf4j</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+            
+
+            <!-- general libs minimum version for security -->
+            <dependency>
+			    <groupId>commons-codec</groupId>
+			    <artifactId>commons-codec</artifactId>
+			    <version>${commons-codec.version}</version>
+			</dependency>
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>${commons-collections.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${commons-collections4.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            
+            <dependency>
+    			<groupId>org.apache.commons</groupId>
+    			<artifactId>commons-lang3</artifactId>
+    			<version>${commons-lang3.version}</version>
+			</dependency>
+			
+			<dependency>
+    			<groupId>org.apache.commons</groupId>
+    			<artifactId>commons-text</artifactId>
+    			<version>${commons-text.version}</version>
+			</dependency>
+
+            <dependency>
+                <groupId>com.jcraft</groupId>
+                <artifactId>jsch</artifactId>
+                <version>${jsch.version}</version>
+            </dependency>
+            <!-- new jsch fork to support new security cipher recommendation (/!\some cipher suite are deprecated with this version) -->
+            <dependency>
+			    <groupId>com.github.mwiede</groupId>
+			    <artifactId>jsch</artifactId>
+			    <version>${jsch2.version}</version>
+			</dependency>
+            
+            <dependency>
+			    <groupId>org.apache.santuario</groupId>
+			    <artifactId>xmlsec</artifactId>
+			    <version>${xmlsec.version}</version>
+			</dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <!-- default build global configuration -->
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>${main.config.directory}</directory>
+                <filtering>${config.env.filtering}</filtering>
+            </resource>
+        </resources>
+
+        <!-- filtering enforced by defaut to true for the test ressources to allow maven variables to be replaced with values defined in profile or filters -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+            <testResource>
+                <directory>${test.config.directory}</directory>
+                <filtering>${config.env.filtering}</filtering>
+            </testResource>
+        </testResources>
+
+        <!-- Config plugin management for all projects : not included by default in the build. So if you need one in your build, just add it with no configuration to inherit from the default configuration declared here -->
+        <pluginManagement>
+            <plugins>
+			   <plugin>
+			        <groupId>org.cyclonedx</groupId>
+			        <artifactId>cyclonedx-maven-plugin</artifactId>
+			        <version>${cyclonedx-maven.version}</version>
+			    </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-archetype-plugin</artifactId>
+                    <version>${maven-archetype.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${maven-assembly.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven-antrun.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper-maven.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven-clean.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler.version}</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven-dependency.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven-deploy.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>${exec-maven.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-failsafe.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven-install.version}</version>
+                    <configuration>
+          				<allowIncompleteProjects>true</allowIncompleteProjects>
+      				</configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-invoker-plugin</artifactId>
+                    <version>${maven-invoker.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.soebes.maven.plugins</groupId>
+                    <artifactId>iterator-maven-plugin</artifactId>
+                    <version>${iterator-maven.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar.version}</version>
+                    <configuration>
+                    <excludes>
+                        <exclude>**/log4j2.xml</exclude>
+                        <exclude>**/logback.xml</exclude>
+                        <exclude>**/log4j.xml</exclude>
+                    </excludes>
+                	</configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc.version}</version>
+                    <configuration>
+                    	<additionalOptions>${maven-javadoc-additionalparam}</additionalOptions>
+                    	<doclint>${maven-javadoc-doclintparam}</doclint>
+                        <quiet>true</quiet>
+                        <docencoding>UTF-8</docencoding>
+                        <charset>UTF-8</charset>
+                        <encoding>UTF-8</encoding>
+                        <failOnError>${maven-javadoc-failOnError}</failOnError>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>${jetty.version}</version>
+                    <configuration>
+                        <!-- We use non NIO connector in order to avoid read only static files under windows -->
+                        <httpConnector>
+                            <port>${jetty.port}</port>
+                            <maxIdleTime>60000</maxIdleTime>
+                        </httpConnector>
+                        <webApp>
+                            <contextPath>/</contextPath>
+                        </webApp>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>${maven-license.version}</version>
+                </plugin>
+                <plugin>
+                    <!-- Configuration specifique pour eviter le deploy du site -->
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven-release.version}</version>
+                    <configuration>
+                        <preparationGoals>${maven-release-plugin-preparationgoals}</preparationGoals>
+                        <autoversionsubmodules>${maven-release-plugin-autoversionsubmodules}</autoversionsubmodules>
+                    </configuration>
+                </plugin>
+                
+                 <plugin>
+                	<groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources.version}</version>
+                    <configuration>
+                        <nonFilteredFileExtensions>
+							<nonFilteredFileExtension>bin</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>cert</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>dat</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>jks</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>p12</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>pem</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>rsa</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>swf</nonFilteredFileExtension>
+                            <nonFilteredFileExtension>vm</nonFilteredFileExtension>
+                        </nonFilteredFileExtensions>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>${maven-scm.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>${maven-shade.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven-site.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar-maven.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-toolchains-plugin</artifactId>
+                    <version>${maven-toolchains.version}</version>
+                </plugin>
+
+                <plugin>
+                    <!-- useful to manage dependencies version changes in all pom -->
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${versions-maven.version}</version>
+                    <!-- specific Configuration to be done for auto upgrade  -->
+                    <!-- see http://mojo.codehaus.org/versions-maven-plugin/examples/update-properties.html -->
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven-war.version}</version>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <version>${maven-dependency-check.version}</version>
+                    <configuration>
+                        <failBuildOnCVSS>${dependency-check.failBuildOnCVSS}</failBuildOnCVSS>
+                        <failOnError>${dependency-check.failOnError}</failOnError>
+                        <suppressionFile>${dependency-check.suppression-file}</suppressionFile>
+                        <!-- to prevent fail if https://ossindex.sonatype.org/ is anavailable, set this property to true -->
+                        <ossIndexWarnOnlyOnRemoteErrors>${dependency-check.IndexWarnOnlyOnRemoteErrors}</ossIndexWarnOnlyOnRemoteErrors>
+                        <skip>${dependency-check.skip}</skip>
+                        <skipTestScope>${dependency-check.skipTestScope}</skipTestScope>
+                        <formats>${dependency-check.formats}</formats>
+                        <autoUpdate>${dependency-check.autoUpdate}</autoUpdate>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>aggregate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+        
+        <!-- plugin owasp declared by default, so it can easily be triggered in ci. The skip option of this plugin allows to desactivate it if needed -->
+        <plugins>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+            </plugin>
+        </plugins>
+
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${maven-surefire-report.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${maven-project-info-reports.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <!-- Profiles  available by default -->
+    <profiles>
+		<profile>
+            <id>build-with-dependency-check</id>
+            <!-- this profile is activated if environment variable ACTIVATE_DEPENDENCY_CHECK is defined and set to true or if maven command is launch with argument -Denv.ACTIVATE_DEPENDENCY_CHECK=true -->        
+        	<activation>
+				<property>
+            		<name>env.ACTIVATE_DEPENDENCY_CHECK</name>
+            		<value>true</value>
+				</property>
+			</activation>
+			<properties>
+				<dependency-check.autoUpdate>true</dependency-check.autoUpdate>
+				<dependency-check.skip>false</dependency-check.skip>
+				<sonar.dependencyCheck.skip>false</sonar.dependencyCheck.skip>
+		        <sonar.dependencyCheck.jsonReportPath>./DCreports/dependency-check-report.json</sonar.dependencyCheck.jsonReportPath>
+		        <sonar.dependencyCheck.htmlReportPath>./DCreports/dependency-check-report.html</sonar.dependencyCheck.htmlReportPath>
+			</properties>
+		</profile>
+		<profile>
+            <id>build-without-dependency-check</id>
+            <!-- this profile is activated if environment variable ACTIVATE_DEPENDENCY_CHECK is defined and set to true or if maven command is launch with argument -Denv.ACTIVATE_DEPENDENCY_CHECK=true -->        
+        	<activation>
+				<property>
+            		<name>env.ACTIVATE_DEPENDENCY_CHECK</name>
+            		<value>!true</value>
+				</property>
+			</activation>
+			<properties>
+				<dependency-check.autoUpdate>false</dependency-check.autoUpdate>
+				<dependency-check.skip>true</dependency-check.skip>
+                <sonar.dependencyCheck.skip>true</sonar.dependencyCheck.skip>
+			</properties>
+		</profile>
+		
+        <profile>
+            <!-- Profil for default deploy build : no extra work -->
+            <id>deploy-default</id>
+        </profile>
+
+        <profile>
+            <!-- allow to deploy snapshot artifacts with an enrironment classifier -->
+            <!-- to be associated with deploy-env-type profile -->
+            <id>deploy-snapshot-env-type</id>
+            <properties>
+                <repository.id>beepee37-snapshot-repo</repository.id>
+                <repository.url>${beepee37-snapshots-repo}</repository.url>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>JAVA_11ON_Mvn_Env</id>
+            <activation>
+                <jdk>[11,)</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.release>${java.target.compiler.release}</maven.compiler.release>
+            </properties>
+            <build>
+            	<plugins>
+  				    <plugin>
+					    <groupId>org.codehaus.mojo</groupId>
+					    <artifactId>build-helper-maven-plugin</artifactId>
+					    <executions>
+					        <execution>
+					        	<id>enforce-maven-compile-release-version</id>
+					            <goals>
+					                <goal>bsh-property</goal>
+					            </goals>
+					            <phase>initialize</phase>
+					            <configuration>
+					                <properties>
+					                    <property>java.target.compiler.release</property>
+					                </properties>
+					                <source>
+					                    java.target.compiler.release = "${java.target.version}".length() == 22 ? "" : "${java.target.version}".replace("1.", "");
+					                    print("[INITIALIZE PHASE] Default parent enforced maven property java.target.compiler.release value to : "+ java.target.compiler.release); 
+					                    print("[INITIALIZE PHASE] maven.compiler.release value is ${maven.compiler.release}");
+					                </source>
+					            </configuration>
+					        </execution>
+							<execution>
+					        	<id>Show-maven-compile-release-version</id>
+					            <goals>
+					                <goal>bsh-property</goal>
+					            </goals>
+					            <phase>compile</phase>
+					            <configuration>
+					                <properties>
+					                </properties>
+					                <source>
+					                    print("[COMPILE PHASE] maven.compiler.release value is ${maven.compiler.release}");
+					                </source>
+					            </configuration>
+					        </execution>
+					    </executions>
+					</plugin>
+				</plugins>
+            </build>
+        </profile>
+
+         <profile>
+            <id>JAVA_8_Tests</id>
+            <activation>
+                <jdk>8</jdk>
+                <property>
+                    <name>!maven.test.skip</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${maven-surefire.version}</version>
+                        <configuration>
+                            <forkCount>${maven-surefire-plugin-forkcount}</forkCount>
+                            <reuseForks>$[maven-surefire-plugin-reuseForks}</reuseForks>
+                            <additionalClasspathElements>
+                                <additionalClasspathElement>
+                                    ${maven-surefire-additionalClasspathElement}
+                                </additionalClasspathElement>
+                            </additionalClasspathElements>
+                            <argLine>@{jaCoCoArgLine} ${maven-surefire-plugin-argline-options}</argLine>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>${maven-failsafe.version}</version>
+                        <configuration>
+                            <forkCount>${maven-failsafe-plugin.forkCount}</forkCount>
+                            <reuseForks>${maven-failsafe-plugin-reuseForks}</reuseForks>
+                            <additionalClasspathElements>
+                                <additionalClasspathElement>${maven-failsafe-plugin.additionalClasspathElement}
+                                </additionalClasspathElement>
+                            </additionalClasspathElements>
+                            <argLine>@{jaCoCoArgLine} ${maven-surefire-plugin-argline-options}</argLine>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>JAVA_11ON_TESTS</id>
+            <activation>
+                <jdk>[11,)</jdk>
+                <property>
+                    <name>!maven.test.skip</name>
+                </property>
+            </activation>
+            <properties>
+            </properties>
+            <build>
+                <plugins>
+<!-- /!\ When using the maven-surefire-plugin or maven-failsafe-plugin with jacoco,  you must not use a forkCount of 0 or set the forkMode to never as this would prevent the execution of the tests with the javaagent set and no coverage would be recorded.  /!\ --> 					
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${maven-surefire.version}</version>
+                        <configuration><!-- a associer avec le profil deploy-env-type -->
+                            <forkCount>${maven-surefire-plugin-forkcount}</forkCount>
+                            <reuseForks>$[maven-surefire-plugin-reuseForks}</reuseForks>
+                            <additionalClasspathElements>
+                                <additionalClasspathElement>
+                                    ${maven-surefire-additionalClasspathElement}
+                                </additionalClasspathElement>
+                            </additionalClasspathElements>
+                            <argLine>@{jaCoCoArgLine} --illegal-access=permit ${maven-surefire-plugin-argline-options}</argLine>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId><!-- a associer avec le profil deploy-env-type -->
+                        <version>${maven-failsafe.version}</version>
+                        <configuration>
+                            <forkCount>${maven-failsafe-plugin.forkCount}</forkCount>
+                            <reuseForks>${maven-failsafe-plugin-reuseForks}</reuseForks>
+                            <additionalClasspathElements>
+                                <additionalClasspathElement>${maven-failsafe-plugin.additionalClasspathElement}
+                                </additionalClasspathElement>
+                            </additionalClasspathElements>
+                            <argLine>@{jaCoCoArgLine} --illegal-access=permit ${maven-surefire-plugin-argline-options}</argLine>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>integration-test</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <!-- allow to deploy snapshot artifacts with an enrironment classifier -->
+            <!-- to be associated with deploy-env-type profile -->
+            <id>deploy-release-env-type</id>
+            <properties>
+                <repository.id>beepee37-release-repo</repository.id>
+                <repository.url>${beepee37-releases-repo}</repository.url>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>jacoco-coverage</id>
+            <activation>
+                <property>
+                    <name>!maven.test.skip</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- code coverage configuration -->
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${maven-jacoco.version}</version>
+					    <executions>
+						  <execution>
+						    <id>prepare-jacoco-agent</id>
+						    <phase>process-test-classes</phase>
+						    <goals>
+						      <goal>prepare-agent</goal>
+						    </goals>
+						    <configuration>
+						      <propertyName>jaCoCoArgLine</propertyName>
+						      <append>true</append>
+						      <output>file</output>
+						    </configuration>
+						  </execution>
+					    </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
