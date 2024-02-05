@@ -33,8 +33,10 @@
         <commons.logging.version>1.2</commons.logging.version>
         <commons-text.version>1.11.0</commons-text.version>
         <cxf-bom.version>3.5.7</cxf-bom.version>
+        <jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
 	    <jakarta.javaee-api.version>8.0.0</jakarta.javaee-api.version>
 	    <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
+	    <jakarta.xml.bind-api.version>3.0.1</jakarta.xml.bind-api.version>
 	     
         <junit-jupiter.version>5.10.2</junit-jupiter.version>
         <jsch.version>0.1.55</jsch.version>
@@ -195,19 +197,31 @@
 			    <scope>import</scope>
 			</dependency>
 
+			<dependency>
+    			<groupId>jakarta.annotation</groupId>
+    			<artifactId>jakarta.annotation-api</artifactId>
+    			<version>${jakarta.annotation-api.version}</version>
+    			<scope>provided</scope>
+			</dependency>
         	<dependency>
     			<groupId>jakarta.platform</groupId>
     			<artifactId>jakarta.jakartaee-api</artifactId>
     			<version>${jakarta.javaee-api.version}</version>
     			<scope>provided</scope>
 			</dependency>
-            
             <dependency>
     			<groupId>jakarta.servlet</groupId>
     			<artifactId>jakarta.servlet-api</artifactId>
     			<version>${jakarta.servlet-api.version}</version>
     			<scope>provided</scope>
 			</dependency>
+			<dependency>
+				  <groupId>jakarta.xml.bind</groupId>
+				  <artifactId>jakarta.xml.bind-api</artifactId>
+				  <version>${jakarta.xml.bind-api.version}</version>
+				  <scope>provided</scope>
+			</dependency>
+			
 
             <!-- Junit 5 full dependencies management -->
             <dependency>
